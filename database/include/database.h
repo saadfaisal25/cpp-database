@@ -12,8 +12,13 @@ public:
     ~Database();
 
     static Database createEmptyDB(const string& dbName);
+    static Database loadDB(const string& dbName);
 
-protected:
+    void destroy();
+    void set(const string& key, const string& value);
+    string get(const string& key);
+
+private:
     string dbName;
 };
 

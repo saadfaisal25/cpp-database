@@ -1,7 +1,8 @@
 #include "database.h"
 
-#include <string>
 #include <filesystem>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -21,4 +22,30 @@ Database Database::createEmptyDB(const std::string& dbName) {
     }
 
     return Database(dbName);
+}
+
+Database Database::loadDB(const string& dbName) {
+    return Database(dbName);
+}
+
+void Database::destroy() {
+    filesystem::remove_all("databases/" + dbName);
+}
+
+void Database::set(const string& key, const string& value) {
+    ofstream file;
+    file.open("databases/" + dbName + "/" + key, ios::out | ios::trunc);
+    file << value;
+    file.close();
+}
+
+string Database::get(const string& key) {
+    ifstream file;
+    file.open("databases/" + dbName + "/" + key, ios::in);
+
+    string value;
+    getline(file, value);
+    file.close();
+
+    return value;
 }
