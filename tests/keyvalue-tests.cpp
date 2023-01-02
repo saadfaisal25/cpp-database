@@ -1,12 +1,12 @@
 #include "tests.h"
 
-#include "database.h"
+#include "database/database.h"
 #include <string>
 #include <filesystem>
 
 TEST_CASE("Add and get value", "[set][get]") {
     std::string dbName("testDB");
-    Database db(Database::createEmptyDB(dbName));
+    DatabaseLib::Database db(DatabaseLib::Database::createEmptyDB(dbName));
 
     // add a key-value pair and check if the added value is the same as the returned value
     std::string key("test-key");

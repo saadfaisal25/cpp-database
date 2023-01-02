@@ -1,8 +1,8 @@
 #include <cxxopts.hpp>
 #include <iostream>
-#include "database.h"
+#include "database/database.h"
 
-using namespace std;
+using namespace DatabaseLib;
 
 cxxopts::Options options("database-cli", "A command line interface for the database library");
 

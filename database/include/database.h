@@ -5,6 +5,8 @@
 
 using namespace std;
 
+namespace DatabaseLib {
+
 class Database
 {
 public:
@@ -21,5 +23,7 @@ public:
 private:
     string dbName;
 };
+
+}
 
 #endif // DATABASE_H
