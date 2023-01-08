@@ -9,6 +9,6 @@ add_executable(db-tests
 include_directories(${CMAKE_SOURCE_DIR})
 
 target_link_libraries(db-tests PRIVATE Catch2::Catch2WithMain)
-target_link_libraries(db-tests PRIVATE database)
+target_link_libraries(db-tests PRIVATE mydatabase)
 
 target_compile_features(db-tests PRIVATE cxx_std_17)

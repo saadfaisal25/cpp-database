@@ -6,13 +6,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(HEADERS
   include/database.h
+  include/mydatabase.h
 )
 
-add_library(database
+add_library(mydatabase
   src/database.cpp
+  src/mydatabase.cpp
 )
 
-target_include_directories(database
+target_include_directories(mydatabase
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>

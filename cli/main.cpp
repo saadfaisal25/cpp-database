@@ -1,6 +1,6 @@
 #include <cxxopts.hpp>
 #include <iostream>
-#include "database/database.h"
+#include "mydatabase/mydatabase.h"
 
 using namespace DatabaseLib;
 
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     }
 
     string dbName = result["n"].as<string>();
-    Database::createEmptyDB(dbName);
+    MyDatabase::createEmptyDB(dbName);
     cout << "Database " << dbName << " created" << endl;
     return 0;
   }
@@ -45,9 +45,9 @@ int main(int argc, char* argv[]) {
     }
 
     string dbName = result["n"].as<string>();
-    Database db(Database::loadDB(dbName));
+    unique_ptr<IDatabase> db(MyDatabase::loadDB(dbName));
 
-    db.destroy();
+    db->destroy();
     cout << "Database " << dbName << " destroyed" << endl;
     return 0;
   }
@@ -72,8 +72,8 @@ int main(int argc, char* argv[]) {
     string key = result["k"].as<string>();
     string value = result["v"].as<string>();
 
-    Database db(Database::loadDB(dbName));
-    db.set(key, value);
+    unique_ptr<IDatabase> db(MyDatabase::loadDB(dbName));
+    db->set(key, value);
     cout << "Key-value pair added" << endl;
     return 0;
   }
@@ -92,8 +92,8 @@ int main(int argc, char* argv[]) {
     string dbName = result["n"].as<string>();
     string key = result["k"].as<string>();
 
-    Database db(Database::loadDB(dbName));
-    cout << db.get(key) << endl;
+    unique_ptr<IDatabase> db(MyDatabase::loadDB(dbName));
+    cout << db->get(key) << endl;
     return 0;
   }
 
