@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <unordered_map>
 
 using namespace DatabaseLib;
 using namespace DatabaseExt;
@@ -22,11 +23,26 @@ public:
 
 private:
     string dbName;
+    unordered_map<string, string> kvStore;
 };
 
 // Implementation
 
-EmbeddedDatabase::Impl::Impl(const string& dbName) : dbName(dbName) {}
+EmbeddedDatabase::Impl::Impl(const string& dbName) : dbName(dbName) {
+    for (const auto& file : filesystem::directory_iterator("databases/" + dbName)) {
+        if (file.path().extension() == ".kv") {
+            ifstream kvFile;
+            kvFile.open(file.path());
+
+            string key = file.path().stem();
+            string value;
+            getline(kvFile, value);
+            kvFile.close();
+
+            kvStore.insert({key, value});
+        }
+    }
+}
 
 EmbeddedDatabase::Impl::~Impl() {}
 
@@ -50,24 +66,31 @@ const unique_ptr<IDatabase> EmbeddedDatabase::Impl::loadDB(const string& dbName)
 
 void EmbeddedDatabase::Impl::destroy() {
     filesystem::remove_all("databases/" + dbName);
+    kvStore.clear();
 }
 
 void EmbeddedDatabase::Impl::set(const string& key, const string& value) {
     ofstream file;
-    file.open("databases/" + dbName + "/" + key, ios::out | ios::trunc);
+    file.open("databases/" + dbName + "/" + key + ".kv", ios::out | ios::trunc);
     file << value;
     file.close();
+
+    kvStore.insert({key, value});
 }
 
 string EmbeddedDatabase::Impl::get(const string& key) {
-    ifstream file;
-    file.open("databases/" + dbName + "/" + key, ios::in);
+    // ifstream file;
+    // file.open("databases/" + dbName + "/" + key + ".kv", ios::in);
 
-    string value;
-    getline(file, value);
-    file.close();
+    // string value;
+    // getline(file, value);
+    // file.close();
 
-    return value;
+    const auto& value = kvStore.find(key);
+    if (value == kvStore.end()) {
+        return "";
+    }
+    return value->second;
 }
 
 // Embedded Database
