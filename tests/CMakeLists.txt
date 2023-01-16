@@ -4,6 +4,7 @@ find_package(Catch2 3 REQUIRED)
 add_executable(db-tests 
   dbmanage-tests.cpp
   keyvalue-tests.cpp
+  performance-tests.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR})
